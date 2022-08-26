@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -37,18 +39,20 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        if(Str::contains($request->get('price'),','))
+        if(Str::contains($request->get('price'),',') || Str::contains($request->get('price'),'.'))
         {
             $price = str_replace(",", "", $request->get('price'));
+            $price = str_replace(".", "", $price);
         } else {
             $price = $request->get('price') . '00';
         }
 
-        if(Str::contains($request->get('public_price'),','))
+        if(Str::contains($request->get('public_price'),',') || Str::contains($request->get('public_price'),'.'))
         {
             $public_price = str_replace(",", "", $request->get('public_price'));
+            $public_price = str_replace(".", "", $public_price);
         } else {
             $public_price = $request->get('public_price') . '00';
         }
@@ -98,19 +102,21 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
 
-        if(Str::contains($request->get('price'),','))
+        if(Str::contains($request->get('price'),',') || Str::contains($request->get('price'),'.'))
         {
             $price = str_replace(",", "", $request->get('price'));
+            $price = str_replace(".", "", $price);
         } else {
             $price = $request->get('price') . '00';
         }
 
-        if(Str::contains($request->get('public_price'),','))
+        if(Str::contains($request->get('public_price'),',') || Str::contains($request->get('public_price'),'.'))
         {
             $public_price = str_replace(",", "", $request->get('public_price'));
+            $public_price = str_replace(".", "", $public_price);
         } else {
             $public_price = $request->get('public_price') . '00';
         }
