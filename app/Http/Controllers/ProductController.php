@@ -29,7 +29,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('name')->get();
         return view('products.create',compact('categories'));
     }
 
@@ -57,12 +57,24 @@ class ProductController extends Controller
             $public_price = $request->get('public_price') . '00';
         }
 
+        if ($image = $request->file('image')) {
+            $destinationPath = 'images/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $image = "$profileImage";
+        } else {
+            $image = "";
+        }
+
         $product = new Product([
             'name' => $request->get('name'),
+            'description' => $request->get('description'),
             'quantity' => $request->get('quantity'),
             'price' => $price,
             'public_price' => $public_price,
+            'margin' => $public_price - $price,
             'category_id' => $request->get('category'),
+            'image' => $image
         ]);
 
         $product->save();
@@ -78,7 +90,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('name')->get();
         return view('products.view', compact('product','categories'));
     }
 
@@ -91,7 +103,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
 
-        $categories = Category::all();
+        $categories = Category::orderBy('name')->get();
         return view('products.edit',compact('product','categories'));
     }
 
@@ -121,10 +133,25 @@ class ProductController extends Controller
             $public_price = $request->get('public_price') . '00';
         }
 
+        if ($image = $request->file('image')) {
+            $filePathName = 'images/' . $product->image;
+            if( file_exists($filePathName) && is_file($filePathName)){
+                unlink($filePathName);
+            }
+
+            $destinationPath = 'images/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+
+            $product->image = "$profileImage";
+        }
+
         $product->name = $request->get('name');
+        $product->description = $request->get('description');
         $product->quantity =$request->get('quantity');
         $product->price = $price;
         $product->public_price = $public_price;
+        $product->margin = $public_price - $price;
         $product->category_id = $request->get('category');
         $product->update();
 
@@ -139,6 +166,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+
+        $filePathName = 'images/' . $product->image;
+        if( file_exists($filePathName) && is_file($filePathName)){
+            unlink($filePathName);
+        }
         $product->delete();
         return redirect()->route('products.index')->with('success-message', 'Prodotto eliminato correttamente');
     }

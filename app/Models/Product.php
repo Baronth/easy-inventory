@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','quantity','price','public_price','category_id'
+        'name','description','quantity','price','public_price','margin','category_id','image'
     ];
 
     public function category()
@@ -26,6 +26,10 @@ class Product extends Model
     public function getPublicPriceAttribute()
     {
         return number_format(($this->attributes['public_price']/100), 2,',','');
+    }
+    public function getMarginAttribute()
+    {
+        return number_format(($this->attributes['margin']/100), 2,',','');
     }
 
 }

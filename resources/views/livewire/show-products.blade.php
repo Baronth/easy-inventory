@@ -31,6 +31,9 @@
             <th wire:click="sortBy('public_price')"
                 class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                 Prezzo vendita</th>
+            <th wire:click="sortBy('margin')"
+                class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                Margine</th>
             <th
                 class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                 Categoria</th>
@@ -52,10 +55,13 @@
                     <div class="text-sm leading-5">{{ $product->quantity  }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="text-sm leading-5">{{ $product->price  }}</div>
+                    <div class="text-sm leading-5">€ {{ $product->price  }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="text-sm leading-5">{{ $product->public_price  }}</div>
+                    <div class="text-sm leading-5">€ {{ $product->public_price  }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div class="text-sm leading-5">€ {{ $product->margin  }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                     <div class="text-sm leading-5">{{ $product->category->name  }}</div>
