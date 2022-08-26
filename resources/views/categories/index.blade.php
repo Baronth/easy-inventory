@@ -31,7 +31,7 @@
 
                                     @foreach ($categories as $category)
 
-                                        <tr>
+                                        <tr class="hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <div class="text-sm leading-5"><a href="{{ route('categories.show', $category) }}">{{ $category->name  }}</a></div>
                                             </td>
