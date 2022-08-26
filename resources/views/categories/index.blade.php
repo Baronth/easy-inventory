@@ -12,9 +12,10 @@
                     <div class="flex flex-col mt-8">
                         <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                             <div class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                                <a href="{{ route('categories.create')  }}">Aggiungi</a>
+                                <a href="{{ route('categories.create')  }}"><button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Aggiungi</button></a>
+
                                 <x-success-message />
-                                <table class="min-w-full">
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <thead>
                                     <tr>
                                         <th
@@ -32,7 +33,7 @@
 
                                         <tr>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                <div class="text-sm leading-5">{{ $category->name  }}</div>
+                                                <div class="text-sm leading-5"><a href="{{ route('categories.show', $category) }}">{{ $category->name  }}</a></div>
                                             </td>
                                             <td class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                                                 <a href="{{ route('categories.edit',$category) }}">

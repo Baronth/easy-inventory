@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->integer('price');
             $table->integer('public_price');
+            $table->integer('category_id');
         });
     }
 
