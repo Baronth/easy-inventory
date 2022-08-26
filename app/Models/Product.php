@@ -10,11 +10,22 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name','quantity','price','public_price','category_id'
     ];
 
-    public function products()
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getPriceAttribute()
+    {
+        return number_format(($this->attributes['price']/100), 2,',','');
+    }
+
+    public function getPublicPriceAttribute()
+    {
+        return number_format(($this->attributes['public_price']/100), 2,',','');
+    }
+
 }

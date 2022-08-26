@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate();
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -24,7 +27,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('products.create',compact('categories'));
     }
 
     /**
@@ -35,7 +39,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(Str::contains($request->get('price'),','))
+        {
+            $price = str_replace(",", "", $request->get('price'));
+        } else {
+            $price = $request->get('price') . '00';
+        }
+
+        if(Str::contains($request->get('public_price'),','))
+        {
+            $public_price = str_replace(",", "", $request->get('public_price'));
+        } else {
+            $public_price = $request->get('public_price') . '00';
+        }
+
+        $product = new Product([
+            'name' => $request->get('name'),
+            'quantity' => $request->get('quantity'),
+            'price' => $price,
+            'public_price' => $public_price,
+            'category_id' => $request->get('category'),
+        ]);
+
+        $product->save();
+
+        return redirect()->route('products.index')->with('success-message','Prodotto "' . $request->get('name') . '" creato correttamente');
     }
 
     /**
@@ -46,7 +74,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $categories = Category::all();
+        return view('products.view', compact('product','categories'));
     }
 
     /**
@@ -57,7 +86,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+
+        $categories = Category::all();
+        return view('products.edit',compact('product','categories'));
     }
 
     /**
@@ -69,7 +100,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+
+        if(Str::contains($request->get('price'),','))
+        {
+            $price = str_replace(",", "", $request->get('price'));
+        } else {
+            $price = $request->get('price') . '00';
+        }
+
+        if(Str::contains($request->get('public_price'),','))
+        {
+            $public_price = str_replace(",", "", $request->get('public_price'));
+        } else {
+            $public_price = $request->get('public_price') . '00';
+        }
+
+        $product->name = $request->get('name');
+        $product->quantity =$request->get('quantity');
+        $product->price = $price;
+        $product->public_price = $public_price;
+        $product->category_id = $request->get('category');
+        $product->update();
+
+        return redirect()->route('products.index')->with('success-message', 'Prodotto modificato correttamente');
     }
 
     /**
@@ -80,6 +133,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('products.index')->with('success-message', 'Prodotto eliminato correttamente');
     }
 }
